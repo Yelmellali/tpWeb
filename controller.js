@@ -40,8 +40,12 @@ function Pencil(ctx, drawing, canvas) {
 		this.currentShape.paint(ctx);
 	}.bind(this);
 	this.onInteractionEnd= function(dnd){
-		drawing.Array.push(this.currentShape);
+		var id = "id" + Math.random().toString(16).slice(2)
+		drawing.Array.set(id,this.currentShape);
+		console.log(drawing.Array);
 		drawing.paint(ctx,canvas);
+		updateShapeList(id,this.currentShape);
+		document.getElementById("remove"+id).onclick =(event) => remove(drawing,event.currentTarget.id.substring(6),ctx,canvas)
 		this.currentShape.paint(ctx);
 	}.bind(this);
 };
