@@ -1,5 +1,4 @@
 
-// Implémenter ici les fonctions paint à ajouter dans chacune des classes du modèle.
 
 Rectangle.prototype.paint = function(ctx) {
     ctx.strokeStyle=this.colour
@@ -15,6 +14,17 @@ Line.prototype.paint = function(ctx) {
     ctx.lineTo(this.finX, this.finY);
     ctx.stroke();
 };
+
+Circle.prototype.paint = function(ctx) {
+    ctx.strokeStyle = this.colour;
+    ctx.lineWidth = this.ep;
+    ctx.beginPath();
+
+    ctx.arc(this.initX, this.initY, this.radius, 0, 2 * Math.PI);
+
+    ctx.stroke();
+};
+
 
 Drawing.prototype.paint = function(ctx) {
     //console.log(this.getForms());
@@ -45,6 +55,13 @@ function toDom(shape, index) {
             spanElement.style.color = shape.color;
             liElement.appendChild(spanElement);
             liElement.appendChild(document.createTextNode('Line'));
+        }else if(shape.constructor=== Circle){
+            let spanElement = document.createElement('span');
+            document.createElement('span');
+            spanElement.style.color = shape.color;
+            liElement.appendChild(spanElement);
+            liElement.appendChild(document.createTextNode('Circle'));
+
         }
 
         let buttonElement = document.createElement('button');

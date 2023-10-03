@@ -17,6 +17,12 @@ function Rectangle(initX,initY,ep,hauteur,longeur,colour) {
     this.longeur=longeur;
 }
 
+function Circle(initX,initY,ep,finX,finY,colour) {
+    Shape.call(this,initX,initY,ep,colour)
+    this.finX=finX;
+    this.finY=finY;
+    this.radius = Math.sqrt((finX - initX) ** 2 + (finY - initY) ** 2);
+}
 function Line(initX,initY,ep,finX,finY,colour){
     Shape.call(this,initX,initY,ep,colour)
     this.finX=finX;

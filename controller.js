@@ -1,5 +1,5 @@
 
-var editingMode = { rect: 0, line: 1 };
+var editingMode = { rect: 0, line: 1 , circle: 2};
 
 function Pencil(ctx, drawing, canvas) {
 	this.currEditingMode = editingMode.rect;
@@ -12,18 +12,20 @@ function Pencil(ctx, drawing, canvas) {
 		this.currEditingMode=editingMode.line
 	document.getElementById('butRect').onclick = (_) =>
 		this.currEditingMode=editingMode.rect
+	document.getElementById('butCircle').onclick = (_) =>
+		this.currEditingMode=editingMode.circle
 	document.getElementById('spinnerWidth').onchange = (e) => this.currLineWidth=e.target.value
 	document.getElementById('colour').onchange = (e) => this.currColour=e.target.value
-
-
 	new DnD(canvas, this);
 
 	// Implémentez ici les 3 fonctions onInteractionStart, onInteractionUpdate et onInteractionEnd
 	this.onInteractionStart= function(dnd){
 		if(this.currEditingMode===editingMode.rect) {
 			this.currentShape = new Rectangle();
-		}else{
+		}else if(this.currEditingMode===editingMode.line){
 			this.currentShape=new Line();
+		}else{
+			this.currentShape=new Circle();
 		}
 	}.bind(this);
 	this.onInteractionUpdate= function(dnd){
@@ -32,9 +34,11 @@ function Pencil(ctx, drawing, canvas) {
 			this.currentShape=new Rectangle(dnd.pti_x,dnd.pti_y,this.currLineWidth,
 				dnd.ptf_x-dnd.pti_x,dnd.ptf_y-dnd.pti_y,this.currColour);
 
-		}else{
+		}else if(this.currEditingMode===editingMode.line){
 			this.currentShape=new Line(dnd.pti_x,dnd.pti_y,this.currLineWidth,
-				dnd.ptf_x,dnd.ptf_y,this.currColour)
+				dnd.ptf_x,dnd.ptf_y,this.currColour);
+		}else{
+			this.currentShape=new Circle(dnd.pti_x,dnd.pti_y,this.currLineWidth,dnd.ptf_x,dnd.ptf_y,this.currColour);
 		}
 		drawing.paint(ctx,canvas);
 		this.currentShape.paint(ctx);
@@ -46,6 +50,7 @@ function Pencil(ctx, drawing, canvas) {
 		drawing.paint(ctx,canvas);
 		updateShapeList(id,this.currentShape);
 		document.getElementById("remove"+id).onclick =(event) => remove(drawing,event.currentTarget.id.substring(6),ctx,canvas)
+
 		this.currentShape.paint(ctx);
 	}.bind(this);
 };
